@@ -1,1 +1,1 @@
-## 📁 Seminar_Assignment
+# 📁 Seminar_Assignment
