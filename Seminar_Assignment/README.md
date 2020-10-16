@@ -93,7 +93,7 @@ setResult(RESULT_OK, intent)
 finish()
 ```
 
-**3. _LoginActivity.kt_ - onActivityResult에서 받아온 값 확인**
+**3. _MainActivity.kt_ - onActivityResult에서 받아온 값 확인**
 - 결과를 받아오기 위해서는 요청한 액티비티에서 onActivityResult()라는 메서드를 구현해주어야한다.
 - 3개의 인자 : requestCode, resultCode, data  
             - requestCode : 1번에서 액티비티를 띄울 때 전달했던 요청 코드  
