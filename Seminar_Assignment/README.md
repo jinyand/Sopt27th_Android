@@ -70,6 +70,8 @@ btn_signup.setOnClickListener {
 ### 💡 __startActivityForResult__  
 startActivityForResult는 이동된 Activity로부터 값을 가져올때 쓸 수 있다.
 
+<br>
+
 **1. _MainActivity.kt_ - 값을 받아오고자하는 Activity를 호출한다.**  
                         - 여기서는 MainActivity에서 SignUpActivity를 startActivityForResult로 호출했다.
 ```kotlin
@@ -117,6 +119,8 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 ### 💡 __SharedPreferences__  
 SharedPreferences는 (key, value) 형태로 관리되며, 간단한 값 저장에 사용하기 좋다.  
 데이터의 양이 많다면 서버나 DB의 형태로 저장을 하는 것이 좋지만, 초기 설정값이나 자동 로그인과 같이 간단한 데이터를 저장해야 하는 경우에는 SharedPreferences를 사용하여 쉽게 관리할 수 있다.
+
+<br>
 
 **1. MySharedPreferences.kt 파일 생성**
 ```kotlin
