@@ -7,3 +7,6 @@
 ### 📁 1stSeminar
 * View와 ViewGroup
 * ConstraintLayout / LinearLayout / RelativeLayout
+
+### 📁 2ndSeminar
+* RecyclerView
