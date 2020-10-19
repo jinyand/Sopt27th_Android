@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/et_login_id"
         app:layout_constraintStart_toStartOf="@+id/tv_login_pw"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_pw" />
