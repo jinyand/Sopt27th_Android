@@ -1,9 +1,12 @@
-package com.example.seminar_assignment
+package com.example.seminar_assignment.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.seminar_assignment.ProfileData
+import com.example.seminar_assignment.ProfileGridAdapter
+import com.example.seminar_assignment.R
 import kotlinx.android.synthetic.main.activity_home_grid.*
 
 class HomeGridActivity : AppCompatActivity() {

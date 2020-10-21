@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.seminar_assignment.activity.DetailActivity
 
 class ProfileGridAdapter (private var context : Context) : RecyclerView.Adapter<ProfileViewHolder>() {
 

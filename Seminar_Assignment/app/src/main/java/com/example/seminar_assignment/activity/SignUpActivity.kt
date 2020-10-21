@@ -1,9 +1,10 @@
-package com.example.seminar_assignment
+package com.example.seminar_assignment.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.seminar_assignment.R
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
