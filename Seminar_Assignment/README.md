@@ -1,5 +1,6 @@
 # 📁 Seminar_Assignment
 - [1차 세미나 과제](#-20201016-1%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
+- [2차 세미나 과제](#-20201021-2%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
 <br>
 
 ## ⚡ 2020/10/16 1차 세미나 과제
@@ -237,6 +238,8 @@ private fun login() {
     }
 }
 ```
+
+⏫ [TOP](#-seminar_assignment)
 
 <br>
 
