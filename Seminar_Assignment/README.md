@@ -246,7 +246,10 @@ private fun login() {
 ## ⚡ 2020/10/21 2차 세미나 과제
 
 * 구현 화면
-
+    * 필수 과제, 성장과제1
+![image](https://user-images.githubusercontent.com/38918396/96901363-20244b00-14ce-11eb-93ad-ab805a13fa62.png)
+    * 성장과제2  
+    ![ezgif-7-34ed01fb2fc3](https://user-images.githubusercontent.com/38918396/96902535-9b3a3100-14cf-11eb-83a3-8e85c9641d9f.gif)
 
 ### [2주차 필수 과제] RecyclerView 만들기
 * __RecyclerView__  
