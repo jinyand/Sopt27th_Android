@@ -5,8 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ItemMoveCallback constructor(val profileAdapter: ProfileAdapter) : ItemTouchHelper.Callback(){
 
-    private var isMoved = false    //무빙 이벤트에 대한 boolean값
-
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         val flagDrag = ItemTouchHelper.UP or ItemTouchHelper.DOWN    //드래그 앤 드롭 움직임 설정
         val flagSwipe = ItemTouchHelper.START or ItemTouchHelper.END // 스와이프 움직임 설정
@@ -30,24 +28,4 @@ class ItemMoveCallback constructor(val profileAdapter: ProfileAdapter) : ItemTou
         return true
     }
 
-    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-        super.onSelectedChanged(viewHolder, actionState)
-        if(isMoved){
-            isMoved = false
-            profileAdapter.changeMoveEvent()
-        }
-    }
-
-    override fun onMoved(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        fromPos: Int,
-        target: RecyclerView.ViewHolder,
-        toPos: Int,
-        x: Int,
-        y: Int
-    ) {
-        super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
-        isMoved = true
-    }
 }

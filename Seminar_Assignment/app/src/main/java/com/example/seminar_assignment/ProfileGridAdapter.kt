@@ -25,6 +25,7 @@ class ProfileGridAdapter (private var context : Context) : RecyclerView.Adapter<
             intent.putExtra("title", data[position].title)
             intent.putExtra("subtitle", data[position].subTitle)
             intent.putExtra("content", data[position].content)
+            intent.putExtra("date", data[position].date)
             startActivity(holder.itemView.context, intent, null)
 
         }

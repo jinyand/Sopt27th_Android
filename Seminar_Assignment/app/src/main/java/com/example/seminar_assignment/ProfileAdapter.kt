@@ -26,6 +26,7 @@ class ProfileAdapter (private var context : Context) : RecyclerView.Adapter<Prof
             intent.putExtra("title", data[position].title)
             intent.putExtra("subtitle", data[position].subTitle)
             intent.putExtra("content", data[position].content)
+            intent.putExtra("date", data[position].date)
             startActivity(holder.itemView.context, intent, null)
 
         }
@@ -47,11 +48,6 @@ class ProfileAdapter (private var context : Context) : RecyclerView.Adapter<Prof
 
         notifyItemMoved(beforePosition, afterPosition)
         notifyDataSetChanged()
-    }
-
-    //드래그앤 드롭 터치를 마무리 하였을 경우 들어오는 함수
-    fun changeMoveEvent(){
-
     }
 
     // 아이템을 삭제하는 함수
