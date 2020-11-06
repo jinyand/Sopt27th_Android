@@ -655,3 +655,5 @@ Adapter가 있어야 fragment와 ViewPager사이의 연결이 가능하므로 �
         getTabAt(1)?.text = "other"
     }
     ```
+
+⏫ [TOP](#-seminar_assignment)
