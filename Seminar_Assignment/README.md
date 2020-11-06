@@ -1,6 +1,7 @@
 # 📁 Seminar_Assignment
 - [1차 세미나 과제](#-20201016-1%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
 - [2차 세미나 과제](#-20201021-2%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
+- [3차 세미나 과제](#-20201106-3%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
 <br>
 
 ## ⚡ 2020/10/16 1차 세미나 과제
@@ -429,80 +430,228 @@ Item Click을 통해 새로운 액티비티(여기서는 상세보기 화면)로
 이때 ItemActionListener로 어댑터에 제거할 아이템의 position을 파라미터와 함께 콜백을 전달한다.
 * isLongPressDragEnabled(), isItemViewSwipeEnabled() : 아이템을 길게 누르거나 스와이프하면 Drag & Drop 또는 Swipe 작업을 시작해야 하는지를 반환한다.
 
-```kotlin
-class ItemMoveCallback constructor(val profileAdapter: ProfileAdapter) : ItemTouchHelper.Callback(){
+    ```kotlin
+    class ItemMoveCallback constructor(val profileAdapter: ProfileAdapter) : ItemTouchHelper.Callback(){
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        val flagDrag = ItemTouchHelper.UP or ItemTouchHelper.DOWN    //드래그 앤 드롭 움직임 설정
-        val flagSwipe = ItemTouchHelper.START or ItemTouchHelper.END // 스와이프 움직임 설정
-        return makeMovementFlags(flagDrag, flagSwipe)
+        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+            val flagDrag = ItemTouchHelper.UP or ItemTouchHelper.DOWN    //드래그 앤 드롭 움직임 설정
+            val flagSwipe = ItemTouchHelper.START or ItemTouchHelper.END // 스와이프 움직임 설정
+            return makeMovementFlags(flagDrag, flagSwipe)
+        }
+
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            profileAdapter.onItemDragMove(viewHolder.adapterPosition, target.adapterPosition)
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            profileAdapter.onItemRemoved(viewHolder.adapterPosition)
+        }
+
+        override fun isLongPressDragEnabled(): Boolean {
+            return true
+        }
+
+        override fun isItemViewSwipeEnabled(): Boolean {
+            return true
+        }
+
     }
-
-    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        profileAdapter.onItemDragMove(viewHolder.adapterPosition, target.adapterPosition)
-        return true
-    }
-
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        profileAdapter.onItemRemoved(viewHolder.adapterPosition)
-    }
-
-    override fun isLongPressDragEnabled(): Boolean {
-        return true
-    }
-
-    override fun isItemViewSwipeEnabled(): Boolean {
-        return true
-    }
-
-}
-```
+    ```
 
 2. __Adapter에서 메소드 구현__  
 
 * onItemDragMove : 현재위치와 움직일 위치를 입력받고 아이템의 이동을 구현한다. notifyItemMoved 메소드를 사용하여 데이터가 이동함을 알린다.
 * onItemRemoved : 위치값을 입력받고 아이템리스트의 해당 포지션 아이템을 삭제한다. notifyItemRemoved 메소드를 사용하여 데이터가 삭제되었음을 알린다.
 
-```kotlin
-class ProfileAdapter (private var context : Context) : RecyclerView.Adapter<ProfileViewHolder>() {
+    ```kotlin
+    class ProfileAdapter (private var context : Context) : RecyclerView.Adapter<ProfileViewHolder>() {
 
-    ...
-    
-    // 순서를 변경하는 함수
-    fun onItemDragMove(beforePosition : Int, afterPosition : Int){
-        if(beforePosition < afterPosition){
-            for (i in beforePosition until afterPosition) {
-                Collections.swap(data, i, i + 1)
+        ...
+
+        // 순서를 변경하는 함수
+        fun onItemDragMove(beforePosition : Int, afterPosition : Int){
+            if(beforePosition < afterPosition){
+                for (i in beforePosition until afterPosition) {
+                    Collections.swap(data, i, i + 1)
+                }
+            } else {
+                for (i in beforePosition downTo afterPosition + 1) {
+                    Collections.swap(data, i, i - 1)
+                }
             }
-        } else {
-            for (i in beforePosition downTo afterPosition + 1) {
-                Collections.swap(data, i, i - 1)
-            }
+
+            notifyItemMoved(beforePosition, afterPosition)
+            notifyDataSetChanged()
         }
 
-        notifyItemMoved(beforePosition, afterPosition)
-        notifyDataSetChanged()
-    }
+        // 아이템을 삭제하는 함수
+        fun onItemRemoved(position: Int) {
+            data.removeAt(position)
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
+        }
 
-    // 아이템을 삭제하는 함수
-    fun onItemRemoved(position: Int) {
-        data.removeAt(position)
-        notifyItemRemoved(position)
-        notifyDataSetChanged()
     }
-
-}
-```
+    ```
 
 3. __적용하기__
 * 액티비티에서는 adapter를 입력한 ItemMoveCallback 클래스를 ItemTouchHelper 생성자에 입력하여 생성한다.
 * TouchHelper의 attachToRecyclerView 메소드를 활용하여 Touch를 구현할 리사이클러뷰를 연결한다.
-```kotlin
-val callback = ItemMoveCallback(profileAdapter)
-val touchHelper = ItemTouchHelper(callback)
-touchHelper.attachToRecyclerView(activity_home_rv_profile)
-```
+    ```kotlin
+    val callback = ItemMoveCallback(profileAdapter)
+    val touchHelper = ItemTouchHelper(callback)
+    touchHelper.attachToRecyclerView(activity_home_rv_profile)
+    ```
 
 ⏫ [TOP](#-seminar_assignment)
 
 <br>
+
+## ⚡ 2020/11/06 3차 세미나 과제
+
+* 구현화면
+
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/38918396/98324619-20752800-2030-11eb-91d9-8c591b60a8d9.gif)
+
+### [3주차 필수 과제] Bottom Navigation, Tablayout 배치
+📝 하단탭 + 뷰페이저로 전체적인 화면 구성  
+📝 프로필 화면에는 TabLayout 필요
+
+* __Bottom Navigation__  
+BottomNavigationView는 화면 하단에 포함되는 View이며, 크게 2가지 View 정의가 필요하다.  
+(1) BottomNavigationView에서 사용할 메뉴를 나타내는 menu.xml  
+(2) BottomNavigationView를 사용할 layout에서 BottomNavigationView 정의  
+
+    ```xml
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/activity_home_bn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            app:itemIconTint="@color/bn_selector"
+            app:itemTextColor="@color/bn_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bn_menu" />
+    ```
+
+* __ViewPager__<br>
+ViewPager는 데이터를 페이지 단위로 표시하고 화면을 쓸어 넘기는 동작인 스와이프(Swipe)를 통해 페이지 전환을 할 수 있는 컨테이너(Container)이다. ViewPager의 사용 방식은 다음과 같다.  
+(1) 먼저 원하는 페이지 개수만큼 Fragment를 생성한다.  
+(2) ViewPager에서 이용하는 페이지 뷰(View)를 생성해주는 Adapter를 만든다.  
+(3) Adapter를 통해 Fragment를 ViewPager에 등록한다.  
+
+* __Fragment__<br>
+Fragment는 액티비티 내에서 화면 UI 일부를 나타낸다.  
+여러 개의 프래그먼트를 조합하여 액티비티가 출력하는 한 화면의 UI를 표현할 수 있다.  
+액티비티 실행 중에도 화면에 동적으로 추가되거나 다른 프래그먼트로 교체가 가능하다.
+
+* __PagerAdapter__<br>
+ViewPagerAdapter는 ViewPager에서 이용하는 페이지 뷰를 생성하기 위한 용도의 어뎁터이다.  
+Adapter가 있어야 fragment와 ViewPager사이의 연결이 가능하므로 필수로 구현해야 한다.
+
+1. ViewPagerAdapter를 생성한다.
+    ```kotlin
+    class HomeViewPagerAdapter (fm : FragmentManager)
+        : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+        override fun getItem(position: Int): Fragment = when(position) {
+            0 -> ProfileFragment()
+            1 -> PortfolioFragment()
+            2 -> WidgetFragment()
+            else -> throw IllegalStateException("Unexpected position $position")
+        }
+
+        override fun getCount(): Int = 3
+    }
+    ```
+
+2. ViewPager에 Adapter를 세팅한다.
+    ```kotlin
+    viewPagerAdapter = HomeViewPagerAdapter(supportFragmentManager)
+    activity_home_vp.adapter = viewPagerAdapter
+    ```
+
+    3. BottomNavigation의 메뉴를 클릭했을 때 해당하는 프래그먼트가 호출되어 화면에 표시되도록 한다.
+    ```kotlin
+    // 뷰페이저 세팅
+    activity_home_vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        ...
+        override fun onPageSelected(position: Int) {
+            activity_home_bn.menu.getItem(position).isChecked = true
+        } 
+    })
+
+    // 바텀 네비게이션 세팅
+    activity_home_bn.setOnNavigationItemSelectedListener {
+        var index by Delegates.notNull<Int>()
+
+        when(it.itemId) {
+            R.id.menu_profile -> index = 0
+            R.id.menu_portfolio -> index = 1
+            R.id.menu_widgets -> index = 2
+        }
+
+        activity_home_vp.currentItem = index
+
+        true
+    }
+    ```
+<br>
+
+* __TabLayout__  
+탭 레이아웃의 사용 방식은 Bottom Navigation과 비슷하다.
+
+1. xml 파일에 TabLayout과 ViewPager를 배치한다.
+    ```xml
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/fragment_profile_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            app:tabIndicatorColor="#009688"
+            tools:layout_editor_absoluteX="198dp" />
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/fragment_profile_vp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_profile_tab" />
+    ```
+
+2. ViewPager와 연결시킬 Adapter를 생성한다.
+    ```kotlin
+    class ProfileTabAdapter (fm: FragmentManager)
+        : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+        override fun getCount(): Int = 2
+
+        override fun getItem(position: Int): Fragment = when(position) {
+            0 -> InfoFragment()
+            1 -> OtherFragment()
+            else -> throw IllegalStateException("Unexpected position $position")
+        }
+
+    }
+    ```
+
+3. ViewPager에 Adapter를 세팅한다.
+    ```kotlin
+    val tabLayout = view.findViewById(R.id.fragment_profile_tab) as TabLayout
+    val viewPager = view.findViewById(R.id.fragment_profile_vp) as ViewPager
+    val tabAdapter = ProfileTabAdapter(childFragmentManager)
+
+    viewPager.adapter = tabAdapter
+    tabAdapter.notifyDataSetChanged()
+
+    tabLayout.setupWithViewPager(viewPager)
+    tabLayout.apply {
+        getTabAt(0)?.text = "info"
+        getTabAt(1)?.text = "other"
+    }
+    ```
