@@ -1,4 +1,4 @@
-package com.example.seminar_assignment
+package com.example.seminar_assignment.portfolio
 
 import android.content.Context
 import android.content.Intent
@@ -6,19 +6,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.seminar_assignment.R
 import com.example.seminar_assignment.activity.DetailActivity
 import java.util.*
 
-class ProfileAdapter (private var context : Context) : RecyclerView.Adapter<ProfileViewHolder>() {
+class PortfolioAdapter (private var context : Context) : RecyclerView.Adapter<PortfolioViewHolder>() {
 
-    var data = mutableListOf<ProfileData>()
+    var data = mutableListOf<PortfolioData>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PortfolioViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_home_recycler, parent, false)
-        return ProfileViewHolder(view)
+        return PortfolioViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PortfolioViewHolder, position: Int) {
         holder.onBind(data[position])
 
         holder.itemView.setOnClickListener {

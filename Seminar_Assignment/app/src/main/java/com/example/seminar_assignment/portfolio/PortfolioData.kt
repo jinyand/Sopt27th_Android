@@ -1,6 +1,6 @@
-package com.example.seminar_assignment
+package com.example.seminar_assignment.portfolio
 
-data class ProfileData(
+data class PortfolioData(
     val title : String,
     val subTitle : String,
     val content : String,

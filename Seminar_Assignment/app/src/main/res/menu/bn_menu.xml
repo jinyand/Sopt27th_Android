@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+
+    <item
+        android:id="@+id/menu_portfolio"
+        android:icon="@drawable/ic_portfolio"
+        android:title="List" />
+
+    <item
+        android:id="@+id/menu_widgets"
+        android:icon="@drawable/ic_widgets"
+        android:title="ETC" />
+</menu>

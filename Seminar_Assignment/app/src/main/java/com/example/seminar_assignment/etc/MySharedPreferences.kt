@@ -1,4 +1,4 @@
-package com.example.seminar_assignment
+package com.example.seminar_assignment.etc
 
 import android.content.Context
 import android.content.SharedPreferences

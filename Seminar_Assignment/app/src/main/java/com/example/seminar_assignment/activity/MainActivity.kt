@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.example.seminar_assignment.MySharedPreferences
+import com.example.seminar_assignment.etc.MySharedPreferences
 import com.example.seminar_assignment.R
 import kotlinx.android.synthetic.main.activity_main.*
 
