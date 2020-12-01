@@ -2,6 +2,7 @@
 - [1차 세미나 과제](#-20201016-1%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
 - [2차 세미나 과제](#-20201021-2%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
 - [3차 세미나 과제](#-20201106-3%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
+- [6차 세미나 과제](#-20201201-6%EC%B0%A8-%EC%84%B8%EB%AF%B8%EB%82%98-%EA%B3%BC%EC%A0%9C)
 <br>
 
 ## ⚡ 2020/10/16 1차 세미나 과제
@@ -657,3 +658,129 @@ Adapter가 있어야 fragment와 ViewPager사이의 연결이 가능하므로 �
     ```
 
 ⏫ [TOP](#-seminar_assignment)
+
+<br>
+
+## ⚡ 2020/12/01 6차 세미나 과제
+
+### [6주차 필수 과제] 로그인 회원가입 서버 통신
+* POSTMAN TEST
+![image](https://user-images.githubusercontent.com/38918396/100727911-334e0300-340a-11eb-86bb-a8d29eaaf760.png)
+![image](https://user-images.githubusercontent.com/38918396/100727977-4b258700-340a-11eb-9653-8a2842e26593.png)
+
+* 구현화면
+![image](https://user-images.githubusercontent.com/38918396/100727620-d94d3d80-3409-11eb-8d71-d69e2c7aeb80.png)
+
+### :bulb: Retrofit
+* Retrofit 공식 문서 http://devflow.github.io/retrofit-kr/  
+
+**1. 라이브러리 추가**
+  * Retrofit 라이브러리 : https://github.com/square/retrofit  
+  `implementation 'com.squareup.retrofit2:retrofit:2.6.2`  
+  * Retrofit 라이브러리 응답으로 가짜 객체를 만들기 위해  
+  `implementation 'com.squareup.retrofit2:retrofit-mock:2.6.2`
+  * 객체 시리얼라이즈를 위한 Gson 라이브러리 : https://github.com/google/gson  
+  `implementation 'com.google.code.gson:gson:2.8.6`
+  * Retrofit 에서 Gson 을 사용하기 위한 라이브러리  
+  `implementation 'com.squareup.retrofit2:converter-gson:2.6.2`
+
+**2. API에 따른 Request / Response 객체 설계**
+  
+< RequestSignUpData.kt >
+```kotlin
+data class RequestSignUpData(
+    val email : String,
+    val password : String,
+    val userName : String
+)
+```
+< ResponseSignUpData.kt >
+```kotlin
+data class ResponseSignUpData(
+    val data : SignUp,
+    val message : String,
+    val status : Int,
+    val success : Boolean
+)
+
+data class SignUp (
+    val email : String,
+    val password : String,
+    val userName : String
+)
+```
+
+**3. Retrofit Interface 설계**
+
+< SampleService.kt >
+```kotlin
+    @Headers ("Content-Type:application/json")
+    @POST("/users/signin")
+    fun postLogin (
+        @Body body : RequestLoginData
+    ) : Call<ResponseLoginData>
+
+    @POST("/users/signup")
+    fun postSignUp (
+        @Body body : RequestSignUpData
+    ) : Call<ResponseSignUpData>
+```
+
+**4. Retrofit Interface 실제 구현체 만들기**
+  
+< SampleInterface.kt >
+```kotlin
+object SampleInterface {
+    private const val BASE_URL = "http://15.164.83.210:3000"
+
+    private val retrofit : Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val service : SampleService = retrofit.create(SampleService::class.java)
+}
+```
+
+**5. Callback 등록, 통신 요청**
+  * `Call<Type>` : 비동기적으로 Type 을 받아오는 객체
+  * `Callback<Type>` : Type 객체를 받아왔을 때, 프로그래머가 할 행동
+  
+(1) Call 타입이 리턴됨
+```kotlin
+SampleInterface.service.postSignUp(
+    RequestSignUpData(
+        email = et_signup_id.text.toString(),
+        password = et_signup_pw.text.toString(),
+        userName = et_signup_name.text.toString()
+    )
+)
+```
+(2) 실제 서버 통신을 비동기적으로 요청 & 응답을 받았을 경우 수행할 행동
+```kotlin
+.enqueue(
+    object : Callback<ResponseSignUpData> {
+        override fun onResponse(
+            call: Call<ResponseSignUpData>,
+            response: Response<ResponseSignUpData>,
+        ) {
+            if (response.isSuccessful) {
+                Toast.makeText(this@SignUpActivity, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                intent.putExtra("id", et_signup_id.text.toString())
+                intent.putExtra("passwd", et_signup_pw.text.toString())
+                setResult(RESULT_OK, intent)
+                finish()
+            } else {
+                Toast.makeText(this@SignUpActivity, "이미 존재하는 이메일입니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<ResponseSignUpData>, t: Throwable) {
+            Log.d("회원가입 통신 실패", "$t")
+        }
+
+    }
+)
+```
+<br>
